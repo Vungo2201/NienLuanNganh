@@ -4,8 +4,10 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
+        self.speed_jump = -16
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 8
+        self.gravity = 0.8
         self.image = pygame.Surface((32,64))
         self.image.fill('red')
         self.rect = self.image.get_rect(topleft = pos)
@@ -20,10 +22,18 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
             
+        if keys[pygame.K_SPACE]:
+            self.player_jump()
+            
+    def player_gravity(self):
+        self.direction.y += self.gravity
+        self.rect.y += self.direction.y
+            
+    def player_jump(self):
+        self.direction.y = self.speed_jump
+    
     def update(self):
         self.get_input()
-        self.rect.x += self.direction.x * self.speed
-        
     
         
    
