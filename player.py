@@ -1,17 +1,37 @@
-from typing import Any
+from Load import Import_Player_Images
 import pygame
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
+        self.Player_assets()
         self.speed_jump = -16
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 8
         self.gravity = 0.8
-        self.image = pygame.Surface((32,64))
-        self.image.fill('red')
+        self.player_image_index = 0
+        self.animation_speed  = 0.2
+        self.image = self.player_action['Run'][self.player_image_index]
         self.rect = self.image.get_rect(topleft = pos)
     
+    def Player_assets(self):
+        path = 'data/images/player'
+        self.player_action = {'Fall':[],'Run':[],'Hit':[],'Jump':[],'Idle':[]}
+        
+        for animation in self.player_action.keys():
+            image_Path = path + '/' + animation
+            self.player_action[animation] = Import_Player_Images(image_Path)
+            
+    def player_animation(self):
+        animation = self.player_action['Run']
+        
+        self.player_image_index += self.animation_speed
+        if(self.player_image_index >= len(animation)):
+            self.player_image_index = 0
+        
+        self.image = animation[int(self.player_image_index)]
+
+            
     def get_input(self):
         keys = pygame.key.get_pressed()
         
@@ -34,6 +54,7 @@ class Player(pygame.sprite.Sprite):
     
     def update(self):
         self.get_input()
+        self.player_animation()
     
         
    
