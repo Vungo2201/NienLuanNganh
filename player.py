@@ -1,4 +1,4 @@
-from Load import Import_Player_Images
+from Load import Import_Images
 import pygame
 
 class Player(pygame.sprite.Sprite):
@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         
         for animation in self.player_action.keys():
             image_Path = path + '/' + animation
-            self.player_action[animation] = Import_Player_Images(image_Path)
+            self.player_action[animation] = Import_Images(image_Path)
             
     def player_animation(self):
         animation = self.player_action[self.player_current_action]
