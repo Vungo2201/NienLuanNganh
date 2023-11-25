@@ -5,7 +5,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         #player di chuyen
-        self.speed_jump = -16
+        self.speed_jump = -20
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 8
         self.gravity = 0.8
@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
     
     def Player_assets(self):
         path = 'data/images/player'
-        self.player_action = {'Fall':[],'Run':[],'Hit':[],'Jump':[],'Idle':[]}
+        self.player_action = {'Fall':[],'Run':[],'Jump':[],'Idle':[]}
         
         for animation in self.player_action.keys():
             image_Path = path + '/' + animation
