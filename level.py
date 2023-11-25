@@ -1,6 +1,7 @@
 import pygame 
 from Load import *
-from tiles import * 
+from tiles import *
+from enemies import Enimies
 from setting import  tile_size, screen_width
 # from player import Player
 class Level:
@@ -13,18 +14,29 @@ class Level:
         
         self.box_sprites.draw(self.display_surface)
         self.box_sprites.update(self.world_shift)
+        
+        self.enemies_sprites.draw(self.display_surface)
+        self.enemies_sprites.update(self.world_shift)
+        
+        self.block_enemies_sprites.draw(self.display_surface)
+        self.block_enemies_sprites.update(self.world_shift)
+        
+        self.enemies_block_colloision()
     def __init__(self,level_data,surface):
         self.display_surface = surface
 
+        enemies = load_csv_map(level_data['enemies'])
         box = load_csv_map(level_data['box'])
         terrain = load_csv_map(level_data['terrain'])
         apple = load_csv_map(level_data['apple'])
+        block_enemies = load_csv_map(level_data['block_enemies'])
         
         self.terrain_sprites = self.set_level(terrain,'terrain')
         self.apple_sprites = self.set_level(apple,'apple')
         self.box_sprites = self.set_level(box,'item')
+        self.enemies_sprites = self.set_level(enemies,'enemies')
+        self.block_enemies_sprites = self.set_level(block_enemies,'block_enemies')
        
-        # self.set_level(level_data)
         self.world_shift = -1
     #     self.current_x = 0
         
@@ -43,21 +55,26 @@ class Level:
                         tile_list_terrain = image_load('data/images/Terrain/Terrain (16x16).png')
                         tile_surface = tile_list_terrain[int(cell)]
                         tile = StaticTile(tile_size,x,y,tile_surface)
+                    if type == 'enemies':
+                        tile = Enimies(tile_size,x,y)
                     if type == 'apple':
                         tile = AnimeTile(tile_size,x,y,'data/images/Item/apple')
                     if type == 'item':
                         tile_surface = PyGame.image.load('data/images/Item/box.png').convert_alpha()
                         tile = tile = StaticTile(tile_size,x,y,tile_surface)
+                    if type == 'block_enemies':
+                        tile = Tile(tile_size,x,y)
                         
                     sprites_group.add(tile)
-                        
-                
-            
-			
     #             if cell == 'P':
     #                 player_sprite = Player((x,y))
     #                 self.player.add(player_sprite)
         return sprites_group
+    
+    def enemies_block_colloision(self):
+        for enemie in self.enemies_sprites.sprites():
+            if pygame.sprite.spritecollide(enemie,self.block_enemies_sprites,False):
+                enemie.turn_reverse()
     
     # def scroll_x(self):
     #     player = self.player.sprite

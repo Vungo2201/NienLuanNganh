@@ -4,5 +4,6 @@ level1 = {
     'box':'level/level 1/level1._Tile Layer 3.csv',
     'end':'level/level 1/level1._Tile Layer 4.csv',
     'start':'level/level 1/level1._Tile Layer 5.csv',
-    'enemies':'level/level 1/level1._Tile Layer 6.csv'
+    'enemies':'level/level 1/level1._Tile Layer 6.csv',
+    'block_enemies':'level/level 1/level1._Tile Layer 7.csv'
 }
