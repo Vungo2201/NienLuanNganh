@@ -24,6 +24,9 @@ class Level:
         self.goal_sprites.draw(self.display_surface)
         self.goal_sprites.update(self.world_shift)
         
+        self.cloud.draw(self.display_surface)
+        self.cloud.update(self.world_shift)
+        
         self.player.update()
         self.player.draw(self.display_surface)
         
@@ -39,6 +42,7 @@ class Level:
         terrain = load_csv_map(level_data['terrain'])
         apple = load_csv_map(level_data['apple'])
         block_enemies = load_csv_map(level_data['block_enemies'])
+        cloud = load_csv_map(level_data['cloud'])
         player = load_csv_map(level_data['start'])
         goal = load_csv_map(level_data['end'])
         
@@ -47,6 +51,7 @@ class Level:
         self.box_sprites = self.set_level(box,'item')
         self.enemies_sprites = self.set_level(enemies,'enemies')
         self.block_enemies_sprites = self.set_level(block_enemies,'block_enemies')
+        self.cloud = self.set_level(cloud,'cloud')
         self.goal_sprites = self.set_object(goal,'goal')
         self.player = self.set_object(player,'player')
        
@@ -72,6 +77,9 @@ class Level:
                         tile = AnimeTile(tile_size,x,y,'data/images/Item/apple')
                     if type == 'item':
                         tile_surface = PyGame.image.load('data/images/Item/box.png').convert_alpha()
+                        tile = StaticTile(tile_size,x,y,tile_surface)
+                    if type == 'cloud':
+                        tile_surface = PyGame.image.load('data/images/Item/cloud.png').convert_alpha()
                         tile = StaticTile(tile_size,x,y,tile_surface)
                     if type == 'block_enemies':
                         tile = Tile(tile_size,x,y)

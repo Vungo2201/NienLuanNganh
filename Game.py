@@ -10,7 +10,7 @@ class Game:
         pg.display.set_caption("Pixel Adventure")
         self.screen = pg.display.set_mode((screen_width,screen_height))
         self.clock = pg.time.Clock()
-        self.level = Level(level1,self.screen)
+        self.level = Level(level4,self.screen)
     def run(self):
         while True:
             for event in pg.event.get():
