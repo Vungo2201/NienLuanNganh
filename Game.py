@@ -17,7 +17,7 @@ class Game:
         self.UI = User_Interface(screen)
     
     def Show_level(self,current_level):
-        self.level = Level(current_level,screen,self.New_All_level,self.pick_apple)
+        self.level = Level(current_level,screen,self.New_All_level,self.pick_apple,self.resert_apple)
         self.status = 'level'
         
     def New_All_level(self,current_level,new_unlock_level):
@@ -28,6 +28,9 @@ class Game:
         
     def pick_apple(self):
         self.apple += 1
+    
+    def resert_apple(self):
+        self.apple = 0
     
     def run(self):
         if self.status ==  'All_level':

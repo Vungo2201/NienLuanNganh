@@ -6,7 +6,7 @@ from enemies import Enimies
 from setting import  tile_size, screen_width,screen_height
 from player import Player
 class Level:
-    def __init__(self,current_level,surface,New_All_level,pick_apple):
+    def __init__(self,current_level,surface,New_All_level,pick_apple,resert_apple):
         self.display_surface = surface
         self.current_level = current_level
         level_data = levels[current_level]
@@ -32,6 +32,7 @@ class Level:
         self.player = self.set_object(player,'player')
         
         self.pick_apple = pick_apple
+        self.resert_apple = resert_apple
        
         self.world_shift = 0
         self.current_x = 0
@@ -174,13 +175,24 @@ class Level:
     
     def death(self):
         if self.player.sprite.rect.top > screen_height:
-             self.New_All_level(self.current_level,self.current_level)
+            self.resert_apple()
+            self.New_All_level(0,self.current_level)
             
     def win(self):
         if pygame.sprite.spritecollide(self.player.sprite,self.goal_sprites,False):
              self.New_All_level(self.current_level,self.new_max_level)
             
-            
+    def check_player_enemies_colli(self):
+        enemies_colli = pygame.sprite.spritecollide(self.player.sprite,self.enemies_sprites,False)
+        
+        if enemies_colli:
+            for monster in enemies_colli:
+                monster_center = monster.rect.centery
+                monster_top = monster.rect.top
+                player_bottom = self.player.sprite.rect.bottom
+                if monster_top < player_bottom < monster_center and self.player.sprite.direction.y >= 0:
+                    self.player.sprite.direction.y = -10
+                    monster.kill()
         
     def run(self):
         self.apple_sprites.draw(self.display_surface)
@@ -212,6 +224,7 @@ class Level:
         self.horizontal_collision()
         self.vertical_collision()
         self.check_pick_apple()
+        self.check_player_enemies_colli()
         self.death()
         self.win()
    

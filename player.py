@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
     
     def Player_assets(self):
         path = 'data/images/player'
-        self.player_action = {'Fall':[],'Run':[],'Jump':[],'Idle':[]}
+        self.player_action = {'Fall':[],'Hit':[],'Run':[],'Jump':[],'Idle':[]}
         
         for animation in self.player_action.keys():
             image_Path = path + '/' + animation
