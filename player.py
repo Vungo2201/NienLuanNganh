@@ -5,7 +5,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         #player di chuyen
-        self.speed_jump = -20
+        self.speed_jump = -18
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 8
         self.gravity = 0.8
@@ -16,6 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.player_current_action = 'Idle'
         self.player_image_index = 0
         self.animation_speed  = 0.1
+        #check trang thai player
         self.on_top = False
         self.on_bottom = False
         self.on_left = False

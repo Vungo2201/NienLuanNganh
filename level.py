@@ -1,42 +1,18 @@
-import pygame 
+import pygame
+from game_data import levels
 from Load import *
 from tiles import *
 from enemies import Enimies
-from setting import  tile_size, screen_width
+from setting import  tile_size, screen_width,screen_height
 from player import Player
 class Level:
-    def run(self):
-        self.apple_sprites.draw(self.display_surface)
-        self.apple_sprites.update(self.world_shift)
-        
-        self.terrain_sprites.draw(self.display_surface)
-        self.terrain_sprites.update(self.world_shift)
-        
-        self.box_sprites.draw(self.display_surface)
-        self.box_sprites.update(self.world_shift)
-        
-        self.enemies_sprites.draw(self.display_surface)
-        self.enemies_sprites.update(self.world_shift)
-        
-        self.block_enemies_sprites.draw(self.display_surface)
-        self.block_enemies_sprites.update(self.world_shift)
-        
-        self.goal_sprites.draw(self.display_surface)
-        self.goal_sprites.update(self.world_shift)
-        
-        self.cloud.draw(self.display_surface)
-        self.cloud.update(self.world_shift)
-        
-        self.player.update()
-        self.player.draw(self.display_surface)
-        
-        self.scroll_x()
-        self.enemies_block_colloision()
-        self.horizontal_collision()
-        self.vertical_collision()
-    def __init__(self,level_data,surface):
+    def __init__(self,current_level,surface,New_All_level):
         self.display_surface = surface
-
+        self.current_level = current_level
+        level_data = levels[current_level]
+        self.new_max_level = level_data['unlock_level']
+        self.New_All_level = New_All_level
+        
         enemies = load_csv_map(level_data['enemies'])
         box = load_csv_map(level_data['box'])
         terrain = load_csv_map(level_data['terrain'])
@@ -57,7 +33,7 @@ class Level:
        
         self.world_shift = 0
         self.current_x = 0
-        
+    
     def set_level(self,layout,type):
         sprites_group =  pygame.sprite.Group()
    
@@ -87,7 +63,7 @@ class Level:
                     sprites_group.add(tile)
   
         return sprites_group
-    
+ 
     def set_object(self,layout,type):
         sprite =  pygame.sprite.GroupSingle()
         
@@ -104,11 +80,9 @@ class Level:
                         tile = Player((x,y))
                     sprite.add(tile)
                     
-        return sprite
-                    
-                    
-        
+        return sprite    
     
+     
     def enemies_block_colloision(self):
         for enemie in self.enemies_sprites.sprites():
             if pygame.sprite.spritecollide(enemie,self.block_enemies_sprites,False):
@@ -189,5 +163,52 @@ class Level:
             player.on_bottom = False
         if player.on_top and player.direction.y > 0:
             player.on_top = False
+    
+    def death(self):
+        if self.player.sprite.rect.top > screen_height:
+             self.New_All_level(self.current_level,self.current_level)
+            
+    def win(self):
+        if pygame.sprite.spritecollide(self.player.sprite,self.goal_sprites,False):
+             self.New_All_level(self.current_level,self.new_max_level)
+            
+            
+        
+    def run(self):
+        self.apple_sprites.draw(self.display_surface)
+        self.apple_sprites.update(self.world_shift)
+        
+        self.terrain_sprites.draw(self.display_surface)
+        self.terrain_sprites.update(self.world_shift)
+        
+        self.box_sprites.draw(self.display_surface)
+        self.box_sprites.update(self.world_shift)
+        
+        self.enemies_sprites.draw(self.display_surface)
+        self.enemies_sprites.update(self.world_shift)
+        
+        self.block_enemies_sprites.draw(self.display_surface)
+        self.block_enemies_sprites.update(self.world_shift)
+        
+        self.goal_sprites.draw(self.display_surface)
+        self.goal_sprites.update(self.world_shift)
+        
+        self.cloud.draw(self.display_surface)
+        self.cloud.update(self.world_shift)
+        
+        self.player.update()
+        self.player.draw(self.display_surface)
+        
+        self.scroll_x()
+        self.enemies_block_colloision()
+        self.horizontal_collision()
+        self.vertical_collision()
+        self.death()
+        self.win()
+   
+                    
+                    
+        
+   
             
    
