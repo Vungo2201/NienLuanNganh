@@ -18,7 +18,7 @@ class Game:
     def New_All_level(self,current_level,new_unlock_level):
         if new_unlock_level > self.unlock_level:
             self.unlock_level = new_unlock_level
-        self.All_level = All_level(current_level,new_unlock_level,screen,self.Show_level)
+        self.All_level = All_level(current_level,self.unlock_level,screen,self.Show_level)
         self.status = 'All_level'
     
     def run(self):
