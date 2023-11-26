@@ -6,7 +6,7 @@ from enemies import Enimies
 from setting import  tile_size, screen_width,screen_height
 from player import Player
 class Level:
-    def __init__(self,current_level,surface,New_All_level):
+    def __init__(self,current_level,surface,New_All_level,pick_apple):
         self.display_surface = surface
         self.current_level = current_level
         level_data = levels[current_level]
@@ -30,6 +30,8 @@ class Level:
         self.cloud = self.set_level(cloud,'cloud')
         self.goal_sprites = self.set_object(goal,'goal')
         self.player = self.set_object(player,'player')
+        
+        self.pick_apple = pick_apple
        
         self.world_shift = 0
         self.current_x = 0
@@ -163,6 +165,12 @@ class Level:
             player.on_bottom = False
         if player.on_top and player.direction.y > 0:
             player.on_top = False
+            
+    def check_pick_apple(self):
+        pick_apples = pygame.sprite.spritecollide(self.player.sprite,self.apple_sprites,True)
+        if pick_apples:
+            for apple in pick_apples:
+                self.pick_apple()
     
     def death(self):
         if self.player.sprite.rect.top > screen_height:
@@ -203,6 +211,7 @@ class Level:
         self.enemies_block_colloision()
         self.horizontal_collision()
         self.vertical_collision()
+        self.check_pick_apple()
         self.death()
         self.win()
    
