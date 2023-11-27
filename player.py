@@ -2,7 +2,7 @@ from Load import Import_Images
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos):
+    def __init__(self, pos, change_life):
         super().__init__()
         #player di chuyen
         self.speed_jump = -18
@@ -26,6 +26,11 @@ class Player(pygame.sprite.Sprite):
         self.Player_assets()
         self.image = self.player_action['Idle'][self.player_image_index]
         self.rect = self.image.get_rect(topleft = pos)
+        
+        self.change_life = change_life
+        self.Hit = False
+        self.hit_duration = 800
+        self.hurt_time = 0
     
     def Player_assets(self):
         path = 'data/images/player'
@@ -70,6 +75,8 @@ class Player(pygame.sprite.Sprite):
             self.player_current_action = 'Jump'
         elif self.direction.y > 1:
             self.player_current_action = 'Fall'
+        elif self.Hit: 
+            self.player_current_action = 'Hit'
         else:
             if self.direction.x != 0:
                 self.player_current_action = 'Run'
@@ -97,11 +104,24 @@ class Player(pygame.sprite.Sprite):
             
     def player_jump(self):
         self.direction.y = self.speed_jump
+        
+    def get_hit(self):
+        if not self.Hit:
+            self.change_life()
+            self.Hit = True
+            self.hurt_time = pygame.time.get_ticks()
+            
+    def change_hit_stale(self):
+        if self.Hit:
+            cur_time  = pygame.time.get_ticks()
+            if cur_time - self.hurt_time >= self.hit_duration:
+                self.Hit = False
     
     def update(self):
         self.get_current_action()
         self.get_input()
         self.player_animation()
+        self.change_hit_stale()
     
         
    

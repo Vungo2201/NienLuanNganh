@@ -17,7 +17,7 @@ class Game:
         self.UI = User_Interface(screen)
     
     def Show_level(self,current_level):
-        self.level = Level(current_level,screen,self.New_All_level,self.pick_apple,self.resert_apple)
+        self.level = Level(current_level,screen,self.New_All_level,self.pick_apple,self.resert_apple,self.change_life,self.resert_life)
         self.status = 'level'
         
     def New_All_level(self,current_level,new_unlock_level):
@@ -32,6 +32,18 @@ class Game:
     def resert_apple(self):
         self.apple = 0
     
+    def change_life(self):
+        self.current_life -= 1
+        
+    def resert_life(self):
+        self.current_life = self.max_life
+    
+    def game_over(self):
+        if self.current_life == 0:
+            self.resert_life()
+            self.resert_apple()
+            self.New_All_level(0,self.unlock_level)
+            
     def run(self):
         if self.status ==  'All_level':
             self.All_level.run()
@@ -39,6 +51,7 @@ class Game:
             self.level.run()
             self.UI.display_life(self.current_life)
             self.UI.display_apple(self.apple)
+            self.game_over()
        
 pg.init()
 pg.display.set_caption("Pixel Adventure")

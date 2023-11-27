@@ -6,7 +6,7 @@ from enemies import Enimies
 from setting import  tile_size, screen_width,screen_height
 from player import Player
 class Level:
-    def __init__(self,current_level,surface,New_All_level,pick_apple,resert_apple):
+    def __init__(self,current_level,surface,New_All_level,pick_apple,resert_apple,change_life,resert_life):
         self.display_surface = surface
         self.current_level = current_level
         level_data = levels[current_level]
@@ -28,12 +28,12 @@ class Level:
         self.enemies_sprites = self.set_level(enemies,'enemies')
         self.block_enemies_sprites = self.set_level(block_enemies,'block_enemies')
         self.cloud = self.set_level(cloud,'cloud')
-        self.goal_sprites = self.set_object(goal,'goal')
-        self.player = self.set_object(player,'player')
+        self.goal_sprites = self.set_object(goal,'goal',change_life)
+        self.player = self.set_object(player,'player',change_life)
         
         self.pick_apple = pick_apple
         self.resert_apple = resert_apple
-       
+        self.resert_life = resert_life
         self.world_shift = 0
         self.current_x = 0
     
@@ -67,7 +67,7 @@ class Level:
   
         return sprites_group
  
-    def set_object(self,layout,type):
+    def set_object(self,layout,type,change_life):
         sprite =  pygame.sprite.GroupSingle()
         
         for row_index,row in enumerate(layout):
@@ -80,7 +80,7 @@ class Level:
                         goal = pygame.image.load('data/images/Item/End (Idle).png')
                         tile = StaticTile(tile_size,x,y,goal)
                     if type == 'player':
-                        tile = Player((x,y))
+                        tile = Player((x,y),change_life)
                     sprite.add(tile)
                     
         return sprite    
@@ -176,6 +176,7 @@ class Level:
     def death(self):
         if self.player.sprite.rect.top > screen_height:
             self.resert_apple()
+            self.resert_life()
             self.New_All_level(0,self.current_level)
             
     def win(self):
@@ -193,6 +194,8 @@ class Level:
                 if monster_top < player_bottom < monster_center and self.player.sprite.direction.y >= 0:
                     self.player.sprite.direction.y = -10
                     monster.kill()
+                else:
+                    self.player.sprite.get_hit()
         
     def run(self):
         self.apple_sprites.draw(self.display_surface)
