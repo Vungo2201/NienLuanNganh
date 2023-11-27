@@ -8,7 +8,7 @@ level1 = {
     'block_enemies':'level/level 1/level1._Tile Layer 7.csv',
     'cloud':'level/level 1/level1._Tile Layer 8.csv',
     'level_image':'data/images/level/01.png',
-    'position':(150,350),
+    'position':(150,325),
     'unlock_level':1
 }
 level2 = {
@@ -21,7 +21,7 @@ level2 = {
     'block_enemies':'level/level 2/level2_Tile Layer 7.csv',
     'cloud':'level/level 2/level2_Tile Layer 8.csv',
     'level_image':'data/images/level/02.png',
-    'position':(400,350),
+    'position':(400,325),
     'unlock_level':2
 }
 level3 = {
@@ -34,7 +34,7 @@ level3 = {
     'block_enemies':'level/level 3/level3_Tile Layer 7.csv',
     'cloud':'level/level 3/level3_Tile Layer 8.csv',
     'level_image':'data/images/level/03.png',
-    'position':(650,350),
+    'position':(650,325),
 	'unlock_level':3
 }
 level4 = {
@@ -47,7 +47,7 @@ level4 = {
     'block_enemies':'level/level 4/level4_Tile Layer 7.csv',
     'cloud':'level/level 4/level4_Tile Layer 8.csv',
     'level_image':'data/images/level/04.png',
-    'position':(900,350),
+    'position':(900,325),
     'unlock_level':3
 }
 levels = {
