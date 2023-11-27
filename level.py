@@ -36,6 +36,12 @@ class Level:
         self.resert_life = resert_life
         self.world_shift = 0
         self.current_x = 0
+        
+        self.apple_sound = pygame.mixer.Sound('data/sound/eat_apple.wav')
+        self.stomp_sound = pygame.mixer.Sound('data/sound/stomp.wav')
+        self.die_sound = pygame.mixer.Sound('data/sound/die.wav')
+        self.level_win_sound = pygame.mixer.Sound('data/sound/level_win.wav')
+        
     
     def set_level(self,layout,type):
         sprites_group =  pygame.sprite.Group()
@@ -170,18 +176,21 @@ class Level:
     def check_pick_apple(self):
         pick_apples = pygame.sprite.spritecollide(self.player.sprite,self.apple_sprites,True)
         if pick_apples:
+            self.apple_sound.play()
             for apple in pick_apples:
                 self.pick_apple()
     
     def death(self):
         if self.player.sprite.rect.top > screen_height:
+            self.die_sound.play()
             self.resert_apple()
             self.resert_life()
             self.New_All_level(0,self.current_level)
             
     def win(self):
         if pygame.sprite.spritecollide(self.player.sprite,self.goal_sprites,False):
-             self.New_All_level(self.current_level,self.new_max_level)
+            self.level_win_sound.play()
+            self.New_All_level(self.current_level,self.new_max_level)
             
     def check_player_enemies_colli(self):
         enemies_colli = pygame.sprite.spritecollide(self.player.sprite,self.enemies_sprites,False)
@@ -192,6 +201,7 @@ class Level:
                 monster_top = monster.rect.top
                 player_bottom = self.player.sprite.rect.bottom
                 if monster_top < player_bottom < monster_center and self.player.sprite.direction.y >= 0:
+                    self.stomp_sound.play()
                     self.player.sprite.direction.y = -10
                     monster.kill()
                 else:

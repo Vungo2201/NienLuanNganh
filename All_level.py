@@ -34,6 +34,10 @@ class All_level:
         self.move_pointer_direction = pygame.math.Vector2(0,0)
         self.move_pointer_speed = 8
         
+        self.start_time = pygame.time.get_ticks()
+        self.inputable = False
+        self.time_block = 450
+        
         self.setup_level_nodes()
         self.setup_level_pointer()
     
@@ -56,7 +60,7 @@ class All_level:
     def key_input(self):
         keys = pygame.key.get_pressed()
         
-        if not self.moving:
+        if not self.moving and self.inputable:
             if keys[pygame.K_RIGHT] and self.current_level < self.unlock_level:
                 self.move_pointer_direction = self.get_move_pointer('next')
                 self.current_level += 1
@@ -84,7 +88,13 @@ class All_level:
             if target.zone.collidepoint(self.pointer.sprite.position):
                 self.moving = False
                 self.move_pointer_direction = pygame.math.Vector2(0,0)
-        
+    
+    def time_input(self):
+        if not self.inputable:
+            cur_time = pygame.time.get_ticks()
+            if cur_time - self.start_time >= self.time_block:
+                self.inputable = True
+    
     def run(self):
         self.display_surface.blit(self.bg,(0,0))
         self.key_input()
@@ -92,5 +102,6 @@ class All_level:
         self.level_nodes.draw(self.display_surface)
         self.update_level_pointer()
         self.pointer.draw(self.display_surface)
+        self.time_input()
 
        

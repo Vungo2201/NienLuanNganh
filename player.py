@@ -29,8 +29,10 @@ class Player(pygame.sprite.Sprite):
         
         self.change_life = change_life
         self.Hit = False
-        self.hit_duration = 800
+        self.hit_duration = 1200
         self.hurt_time = 0
+        self.jump_sound = pygame.mixer.Sound('data/sound/jump.wav')
+        self.hit_sound = pygame.mixer.Sound('data/sound/hit.wav')
     
     def Player_assets(self):
         path = 'data/images/player'
@@ -103,10 +105,12 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += self.direction.y
             
     def player_jump(self):
+        self.jump_sound.play()
         self.direction.y = self.speed_jump
         
     def get_hit(self):
         if not self.Hit:
+            self.hit_sound.play()
             self.change_life()
             self.Hit = True
             self.hurt_time = pygame.time.get_ticks()
