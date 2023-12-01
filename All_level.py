@@ -40,7 +40,7 @@ class All_level:
         self.time_block = 450
         
         start_img = pygame.image.load('data/images/start_btn.png').convert_alpha()
-        self.start_button = Button(450, 425, start_img, 0.8)
+        self.start_button = Button(470, 420, start_img, 0.8)
         
         self.setup_level_nodes()
         self.setup_level_pointer()
@@ -75,9 +75,6 @@ class All_level:
                 self.moving = True
             if self.start_button.check_click(self.display_surface):
                 self.Show_level(self.current_level)
-
-            # if keys[pygame.K_SPACE]:
-            #     self.Show_level(self.current_level)
 
     
     def get_move_pointer(self,type):
